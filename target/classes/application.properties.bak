@@ -1,0 +1,6 @@
+
+spring.data.neo4j.uri=bolt://175.178.79.16:7687
+spring.data.neo4j.username=neo4j
+spring.data.neo4j.password=wyj12369
+
+server.port=6666

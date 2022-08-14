@@ -1,0 +1,36 @@
+package com.example.po.node;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.neo4j.ogm.annotation.*;
+
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * @program: knowledge_mapping
+ * @description: 关键字
+ * @author: stop.yc
+ * @create: 2022-08-12 20:33
+ **/
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@NodeEntity("keyword")
+public class KeyWord implements Serializable {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+
+    @Property("name")
+    private String name;
+
+
+    @Relationship(type = "论文")
+    @JsonProperty("r_paper")
+    private List<Paper> papers;
+}
