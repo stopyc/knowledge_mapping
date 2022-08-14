@@ -52,13 +52,12 @@ public class CommonController {
 //    }
 
 
-    @GetMapping("/all")
+    @GetMapping
     public Result getAll() {
         Iterable<KeyWord> keyWords = keyWordService.getAll();
         Iterable<Root> roots = rootService.getAll();
         Iterable<Team> teams = teamService.getAll();
         Iterable<Paper> papers = paperService.getAll();
-
         return new Result(new DataVo(roots,teams,keyWords,papers));
     }
 }
