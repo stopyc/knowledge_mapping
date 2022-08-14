@@ -19,21 +19,12 @@ public class KeyWordController {
     @Resource
     private KeyWordService keyWordService;
 
-
     /**
-     * 通过关键字id获取关键字对象
-     * @param id :关键字id
-     * @return :返回封装了关键字的结果集
+     * 获取所有关键字结点
+     * @return :返回封装了所有关键字的结点
      */
-    @GetMapping("/{id}")
-    Result getInfoById(@PathVariable Long id) {
-
-        return keyWordService.getInfoById(id);
-    }
-
-
     @GetMapping
     Result getAll() {
-        return keyWordService.getAll();
+        return new Result(keyWordService.getAll());
     }
 }

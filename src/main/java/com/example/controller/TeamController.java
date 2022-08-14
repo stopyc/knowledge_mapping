@@ -1,10 +1,9 @@
 package com.example.controller;
 
-import com.example.service.KeyWordService;
 import com.example.service.RootService;
+import com.example.service.TeamService;
 import com.example.vo.Result;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,10 +14,10 @@ import javax.annotation.Resource;
  * @author YC104
  */
 @RestController
-@RequestMapping(value = "/roots",produces = "application/json;charset=UTF-8")
-public class RootController {
+@RequestMapping(value = "/teams",produces = "application/json;charset=UTF-8")
+public class TeamController {
     @Resource
-    private RootService rootService;
+    private TeamService teamService;
 
 
     /**
@@ -27,6 +26,6 @@ public class RootController {
      */
     @GetMapping
     Result getAll() {
-        return new Result(rootService.getAll());
+        return new Result(teamService.getAll());
     }
 }

@@ -1,11 +1,10 @@
 package com.example.service.impl;
 
-import com.example.dao.KeyWordRepository;
 import com.example.dao.RootRepository;
-import com.example.po.Root;
+import com.example.dao.TeamRepository;
 import com.example.po.Team;
-import com.example.service.KeyWordService;
 import com.example.service.RootService;
+import com.example.service.TeamService;
 import com.example.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,16 +18,16 @@ import org.springframework.transaction.annotation.Transactional;
  **/
 @Service
 @Transactional
-public class RootServiceImpl implements RootService {
+public class TeamServiceImpl implements TeamService {
 
 
 
     @Autowired
-    private RootRepository rootRepository;
+    private TeamRepository teamRepository;
 
     @Override
-    public Iterable<Root> getAll() {
-        return rootRepository.findAll(1);
+    public Iterable<Team>  getAll() {
+        return teamRepository.findAll(1);
     }
 
 }

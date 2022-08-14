@@ -1,7 +1,6 @@
 package com.example.dao;
 
-import com.example.po.node.KeyWord;
-import com.example.po.node.Root;
+import com.example.po.Root;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,10 @@
 package com.example.controller;
 
-import com.example.service.CommonService;
+import com.example.po.KeyWord;
+import com.example.po.Paper;
+import com.example.po.Root;
+import com.example.po.Team;
+import com.example.service.*;
 import com.example.vo.DataVo;
 import com.example.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.crypto.Data;
 
 /**
  * @program: demo1
@@ -21,17 +24,41 @@ import javax.xml.crypto.Data;
 public class CommonController {
 
     @Autowired
-    CommonService commonService;
+    private KeyWordService keyWordService;
 
-    @GetMapping
-    Result getAllData() {
-        Result allData = commonService.getAllData();
+    @Autowired
+    private PaperService paperService;
 
-        Result otherData = commonService.getOtherData();
+    @Autowired
+    private TeamService teamService;
 
-        DataVo data = (DataVo) otherData.getData();
+    @Autowired
+    private RootService rootService;
 
-        DataVo data2 = (DataVo) allData.getData();
-        return new Result(new DataVo(data.getRoots(),data.getTeams(),data.getKeyWords(),data2.getPapers()));
+//    /**
+//     * 获取所有的数据
+//     * @return :返回封装了所有结果的结果集
+//     */
+//    @GetMapping
+//    public Result getAllData() {
+//        Result allData = commonService.getAllData();
+//
+//        Result otherData = commonService.getOtherData();
+//
+//        DataVo data = (DataVo) otherData.getData();
+//
+//        DataVo data2 = (DataVo) allData.getData();
+//        return new Result(new DataVo(data.getRoots(),data.getTeams(),data.getKeyWords(),data2.getPapers()));
+//    }
+
+
+    @GetMapping("/all")
+    public Result getAll() {
+        Iterable<KeyWord> keyWords = keyWordService.getAll();
+        Iterable<Root> roots = rootService.getAll();
+        Iterable<Team> teams = teamService.getAll();
+        Iterable<Paper> papers = paperService.getAll();
+
+        return new Result(new DataVo(roots,teams,keyWords,papers));
     }
 }

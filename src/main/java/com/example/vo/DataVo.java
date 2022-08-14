@@ -1,9 +1,9 @@
 package com.example.vo;
 
-import com.example.po.node.KeyWord;
-import com.example.po.node.Paper;
-import com.example.po.node.Root;
-import com.example.po.node.Team;
+import com.example.po.KeyWord;
+import com.example.po.Paper;
+import com.example.po.Root;
+import com.example.po.Team;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;

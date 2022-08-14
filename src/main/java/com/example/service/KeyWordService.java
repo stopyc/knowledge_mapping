@@ -1,7 +1,10 @@
 package com.example.service;
 
 
+import com.example.po.KeyWord;
+import com.example.po.Team;
 import com.example.vo.Result;
+import com.sun.org.apache.xpath.internal.compiler.Keywords;
 
 import javax.print.DocFlavor;
 
@@ -17,18 +20,10 @@ public interface KeyWordService {
 
 
     /**
-     * 根据id查询对象
-     * @param id :id
-     * @return :返回一个关键字对象
-     */
-    Result getInfoById(Long id);
-
-
-    /**
      * 查询所有的关键字
      * @return :关键字集合结果集
      */
-    Result getAll();
+    Iterable<KeyWord> getAll();
 
 
 }

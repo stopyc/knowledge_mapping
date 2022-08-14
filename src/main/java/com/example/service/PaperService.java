@@ -1,6 +1,8 @@
 package com.example.service;
 
 
+import com.example.po.Paper;
+import com.example.po.Team;
 import com.example.vo.Result;
 
 /**
@@ -9,14 +11,14 @@ import com.example.vo.Result;
  * @author: stop.yc
  * @create: 2022-08-12 20:37
  **/
-public interface KeyWordRelationshipService {
+public interface PaperService {
 
 
     /**
      * 查询所有的关键字
      * @return :关键字集合结果集
      */
-    Result getAll();
+    Iterable<Paper> getAll();
 
 
 }

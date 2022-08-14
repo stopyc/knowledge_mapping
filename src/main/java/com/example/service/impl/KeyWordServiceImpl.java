@@ -1,6 +1,8 @@
 package com.example.service.impl;
 
 import com.example.dao.KeyWordRepository;
+import com.example.po.KeyWord;
+import com.example.po.Team;
 import com.example.service.KeyWordService;
 import com.example.vo.Result;
 import org.neo4j.ogm.model.Node;
@@ -26,13 +28,8 @@ public class KeyWordServiceImpl implements KeyWordService {
     private  KeyWordRepository keyWordRepository;
 
     @Override
-    public Result getInfoById(Long id) {
-        return new Result(keyWordRepository.findById(id).get());
-    }
-
-    @Override
-    public Result getAll() {
-        return new Result(keyWordRepository.findAll());
+    public Iterable<KeyWord> getAll() {
+        return keyWordRepository.findAll(1);
     }
 
 }
