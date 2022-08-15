@@ -2,6 +2,8 @@ package com.example.service.impl;
 
 import com.example.dao.KeyWordRepository;
 import com.example.dao.RootRepository;
+import com.example.po.Root;
+import com.example.po.Team;
 import com.example.service.KeyWordService;
 import com.example.service.RootService;
 import com.example.vo.Result;
@@ -25,8 +27,8 @@ public class RootServiceImpl implements RootService {
     private RootRepository rootRepository;
 
     @Override
-    public Result getAll() {
-        return new Result(rootRepository.findAll());
+    public Iterable<Root> getAll() {
+        return rootRepository.findAll(0);
     }
 
 }

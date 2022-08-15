@@ -10,14 +10,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DemoApplication {
 
     public static void main(String[] args) {
-        //        //TODO API接口文档
-//
+//        //        //TODO API接口文档
+////
 //        DocsConfig config = new DocsConfig();
 //
 //        // 项目根目录
-//        config.setProjectPath("E:\\java_project\\demo1");
+//        config.setProjectPath("E:\\github_project\\qg-knowledge-mapping\\knowledge_mapping");
 //        // 项目名称
-//        config.setProjectName("demo1");
+//        config.setProjectName("knowledge_mapping");
 //        // 声明该API的版本
 //        config.setApiVersion("V1.4.4");
 //        // 生成API 文档所在目录

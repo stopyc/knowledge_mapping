@@ -21,8 +21,12 @@ public class RootController {
     private RootService rootService;
 
 
+    /**
+     * 获取所有根结点
+     * @return :返回封装了所有根结点的结果集
+     */
     @GetMapping
     Result getAll() {
-        return rootService.getAll();
+        return new Result(rootService.getAll());
     }
 }
