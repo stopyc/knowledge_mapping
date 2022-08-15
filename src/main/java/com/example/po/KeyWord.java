@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @NodeEntity("keyword")
-public class KeyWord implements Serializable {
+public class KeyWord implements Node{
 
     @Id
     @GeneratedValue
@@ -29,8 +29,4 @@ public class KeyWord implements Serializable {
     @Property("name")
     private String name;
 
-
-    @Relationship(type = "论文")
-    @JsonProperty("r_paper")
-    private List<Paper> papers;
 }

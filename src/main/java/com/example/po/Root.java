@@ -23,7 +23,7 @@ import java.util.List;
 @NoArgsConstructor
 @NodeEntity("root")
 @AllArgsConstructor
-public class Root implements Serializable {
+public class Root implements Node{
 
     @Id
     private Long id;
@@ -32,7 +32,4 @@ public class Root implements Serializable {
     @Property("name")
     private String name;
 
-    @Relationship(type = "团队")
-    @JsonProperty("r_team")
-    private List<Team> teams;
 }

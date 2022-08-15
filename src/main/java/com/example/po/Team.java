@@ -23,7 +23,7 @@ import java.util.List;
 @NodeEntity("team")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Team implements Serializable {
+public class Team implements Node{
 
     @Id
     private Long id;
@@ -40,7 +40,5 @@ public class Team implements Serializable {
     @Property("team")
     private String team;
 
-    @Relationship(type = "发表")
-    @JsonProperty("r_publish")
-    private List<Paper> papers;
+
 }

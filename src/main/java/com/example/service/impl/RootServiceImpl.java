@@ -28,7 +28,7 @@ public class RootServiceImpl implements RootService {
 
     @Override
     public Iterable<Root> getAll() {
-        return rootRepository.findAll(1);
+        return rootRepository.findAll(0);
     }
 
 }

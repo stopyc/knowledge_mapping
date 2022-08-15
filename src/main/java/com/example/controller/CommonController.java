@@ -1,16 +1,18 @@
 package com.example.controller;
 
-import com.example.po.KeyWord;
-import com.example.po.Paper;
-import com.example.po.Root;
-import com.example.po.Team;
+import com.example.po.*;
 import com.example.service.*;
 import com.example.vo.DataVo;
+import com.example.vo.RelationVo;
 import com.example.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.management.relation.RelationService;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -35,21 +37,20 @@ public class CommonController {
     @Autowired
     private RootService rootService;
 
-//    /**
-//     * 获取所有的数据
-//     * @return :返回封装了所有结果的结果集
-//     */
-//    @GetMapping
-//    public Result getAllData() {
-//        Result allData = commonService.getAllData();
-//
-//        Result otherData = commonService.getOtherData();
-//
-//        DataVo data = (DataVo) otherData.getData();
-//
-//        DataVo data2 = (DataVo) allData.getData();
-//        return new Result(new DataVo(data.getRoots(),data.getTeams(),data.getKeyWords(),data2.getPapers()));
-//    }
+    @Autowired
+    private KeyWordRelationService keyWordRelationService;
+
+    @Autowired
+    private TeamRelationService teamRelationService;
+
+    @Autowired
+    private CitationRelationService citationRelationService;
+
+    @Autowired
+    private PublishRelationService publishRelationService;
+
+    @Autowired
+    private PaperRelationService paperRelationService;
 
 
     @GetMapping
@@ -58,6 +59,27 @@ public class CommonController {
         Iterable<Root> roots = rootService.getAll();
         Iterable<Team> teams = teamService.getAll();
         Iterable<Paper> papers = paperService.getAll();
-        return new Result(new DataVo(roots,teams,keyWords,papers));
+        List<RelationVo> keyWordRelations = transferStyle(keyWordRelationService.getAll());
+        List<RelationVo> teamRelations = transferStyle(teamRelationService.getAll());
+        List<RelationVo> citationRelations = transferStyle(citationRelationService.getAll());
+        List<RelationVo> publishRelations = transferStyle(publishRelationService.getAll());
+        List<RelationVo> paperRelations = transferStyle(paperRelationService.getAll());
+
+        return new Result(new DataVo(roots,teams,keyWords,papers,keyWordRelations,publishRelations,teamRelations,citationRelations,paperRelations));
+    }
+
+
+
+    private List<RelationVo> transferStyle(Iterable<? extends Relation> relations) {
+
+        List<RelationVo> relationVos = new LinkedList<>();
+        RelationVo relationVo = null;
+        for (Relation relation : relations) {
+            relationVo = new RelationVo();
+            relationVo.setSrcId(relation.getSrc().getId());
+            relationVo.setDestId(relation.getDest().getId());
+            relationVos.add(relationVo);
+        }
+        return relationVos;
     }
 }

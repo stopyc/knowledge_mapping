@@ -27,7 +27,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Iterable<Team>  getAll() {
-        return teamRepository.findAll(1);
+        return teamRepository.findAll(0);
     }
 
 }

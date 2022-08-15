@@ -24,7 +24,7 @@ public class PaperServiceImpl implements PaperService {
 
     @Override
     public Iterable<Paper> getAll() {
-        return paperRepository.findAll(1);
+        return paperRepository.findAll(0);
     }
 
 }

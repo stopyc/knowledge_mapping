@@ -29,7 +29,7 @@ public class KeyWordServiceImpl implements KeyWordService {
 
     @Override
     public Iterable<KeyWord> getAll() {
-        return keyWordRepository.findAll(1);
+        return keyWordRepository.findAll(0);
     }
 
 }

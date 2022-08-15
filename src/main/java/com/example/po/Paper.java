@@ -19,7 +19,7 @@ import java.util.List;
 @NodeEntity("paper")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Paper implements Serializable {
+public class Paper implements Node{
 
     @Id
     private Long id;
@@ -39,13 +39,5 @@ public class Paper implements Serializable {
     @Property("title")
     private String title;
 
-
-    @Relationship(type = "引用")
-    @JsonProperty("r_citation")
-    private List<Paper> papers;
-
-    @Relationship(type = "关键词")
-    @JsonProperty("r_keyword")
-    private List<KeyWord> keyWords;
 
 }
