@@ -1,11 +1,8 @@
 package com.example.service.impl;
 
-import com.example.dao.CitationRelationRepository;
-import com.example.dao.KeyWordRelationRepository;
+import com.example.dao.bak.CitationRelationRepository;
 import com.example.po.CitationRelation;
-import com.example.po.KeyWordRelation;
 import com.example.service.CitationRelationService;
-import com.example.service.KeyWordRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

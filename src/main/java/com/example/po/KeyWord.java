@@ -27,6 +27,6 @@ public class KeyWord implements Node{
 
 
     @Property("name")
-    private String name;
+    private String label;
 
 }

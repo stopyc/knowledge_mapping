@@ -16,5 +16,7 @@ public class RelationVo {
 
     private Long srcId;
 
+    private String label;
+
     private Long destId;
 }

@@ -1,12 +1,8 @@
 package com.example.service.impl;
 
-import com.example.dao.KeyWordRelationRepository;
-import com.example.dao.KeyWordRepository;
-import com.example.dao.TeamRepository;
+import com.example.dao.bak.KeyWordRelationRepository;
 import com.example.po.KeyWordRelation;
-import com.example.po.Team;
 import com.example.service.KeyWordRelationService;
-import com.example.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,11 +1,7 @@
 package com.example.service.impl;
 
-import com.example.dao.PublishRelationRepository;
-import com.example.dao.TeamRelationRepository;
-import com.example.po.PublishRelation;
-import com.example.po.Team;
+import com.example.dao.bak.TeamRelationRepository;
 import com.example.po.TeamRelation;
-import com.example.service.PublishRelationService;
 import com.example.service.TeamRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
