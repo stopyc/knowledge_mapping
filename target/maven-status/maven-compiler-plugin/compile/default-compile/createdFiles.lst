@@ -41,6 +41,7 @@ com\example\dao\CommonRepository.class
 com\example\service\KeyWordRelationService.class
 com\example\dao\bak\CitationRelationRepository.class
 com\example\service\impl\TeamRelationServiceImpl.class
+com\example\vo\NodeVo.class
 com\example\service\PublishRelationService.class
 com\example\dao\bak\TeamRelationRepository.class
 com\example\service\CitationRelationService.class

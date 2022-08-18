@@ -37,7 +37,7 @@ public class Paper implements Node{
     private String periodicals;
 
     @Property("title")
-    private String title;
+    private String label;
 
 
 }

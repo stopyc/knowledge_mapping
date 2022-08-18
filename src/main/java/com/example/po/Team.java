@@ -34,7 +34,7 @@ public class Team implements Node {
 
 
     @Property("expert")
-    private String expert;
+    private String label;
 
 
     @Property("team")

@@ -14,9 +14,9 @@ import lombok.ToString;
 @ToString
 public class RelationVo {
 
-    private Long srcId;
+    private String source;
 
     private String label;
 
-    private Long destId;
+    private String target;
 }

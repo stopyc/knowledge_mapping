@@ -4,6 +4,7 @@ import com.example.dao.CommonRepository;
 import com.example.po.*;
 import com.example.service.*;
 import com.example.vo.DataVo;
+import com.example.vo.NodeVo;
 import com.example.vo.RelationVo;
 import com.example.vo.Result;
 import io.netty.channel.EventLoopGroup;
@@ -11,14 +12,11 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import jdk.nashorn.internal.ir.CallNode;
 import org.neo4j.ogm.annotation.RelationshipEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.management.ListenerNotFoundException;
 import javax.management.relation.RelationService;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -27,6 +25,7 @@ import java.util.concurrent.CountDownLatch;
  */
 @RestController
 @RequestMapping(value = "/common", produces = "application/json;charset=UTF-8")
+@CrossOrigin("http://localhost:3000")
 public class CommonController {
 
     @Autowired
@@ -70,6 +69,7 @@ public class CommonController {
      */
     @GetMapping
     public Result getAll() throws InterruptedException {
+        System.out.println("getAll");
 
         //老版,直接在一个线程里进行查询,效率较低
 //        Iterable<KeyWord> keyWords = keyWordService.getAll();
@@ -89,7 +89,6 @@ public class CommonController {
         EventLoopGroup group = new NioEventLoopGroup(7);
 
         final Iterable<KeyWord>[] keyWords = new Iterable[1];
-        Iterable<Root> roots = rootService.getAll();
         final Iterable<Team>[] teams = new Iterable[1];
 
         final List<RelationVo>[] keyWordRelations = new List[1];
@@ -99,18 +98,35 @@ public class CommonController {
         final List<RelationVo>[] paperRelations = new List[1];
 
 
+        List<NodeVo> nodes = new LinkedList<>();
 
         group.next().submit(() -> {
+
+            NodeVo nodeVo = null;
             keyWords[0] = keyWordService.getAll();
+
+            for (KeyWord keyWord : keyWords[0]) {
+                nodeVo = new NodeVo();
+                nodeVo.setId(keyWord.getId()+"").setLabel(keyWord.getLabel()).setType(1);
+                nodes.add(nodeVo);
+            }
+
             countDownLatch.countDown();
         });
 
 
         group.next().submit(() -> {
+            NodeVo nodeVo = null;
             teams[0] = teamService.getAll();
+            for (Team team : teams[0]) {
+                nodeVo = new NodeVo();
+                nodeVo.setId(team.getId()+"").setLabel(team.getLabel()).setType(2);
+                nodes.add(nodeVo);
+            }
             countDownLatch.countDown();
         });
         group.next().submit(() -> {
+            NodeVo nodeVo = null;
             keyWordRelations[0] = transferStyle(keyWordRelationService.getAll());
             countDownLatch.countDown();
         });
@@ -136,12 +152,33 @@ public class CommonController {
         });
 
         Iterable<Paper> papers = paperService.getAll();
+        NodeVo nodeVo = null;
+        for (Paper paper : papers) {
+            nodeVo = new NodeVo();
+            nodeVo.setId(paper.getId()+"").setLabel(paper.getLabel()).setType(3);
+            nodes.add(nodeVo);
+        }
+        Iterable<Root> roots = rootService.getAll();
+        for (Root root : roots) {
+            nodeVo = new NodeVo();
+            nodeVo.setId(root.getId()+"").setLabel(root.getLabel()).setType(3);
+            nodes.add(nodeVo);
+        }
+
 
         countDownLatch.await();
+        List<RelationVo> list= new LinkedList<>();
+        list.addAll(keyWordRelations[0]);
+        list.addAll(teamRelations[0]);
+        list.addAll(citationRelations[0]);
+        list.addAll(publishRelations[0]);
+        list.addAll(paperRelations[0]);
+
         countDownLatch = new CountDownLatch(7);
 
-        return new Result(new DataVo(roots, teams[0], keyWords[0], papers, keyWordRelations[0], publishRelations[0], teamRelations[0], citationRelations[0], paperRelations[0]));
+//        return new Result(new DataVo(roots, teams[0], keyWords[0], papers, keyWordRelations[0], publishRelations[0], teamRelations[0], citationRelations[0], paperRelations[0]));
 
+        return new Result(new DataVo(nodes,list));
 
         //往后优化思路,因为接口几乎是一模一样的,建议处理为反射或者泛型,自动判断类型调用方法,然后建议把查的数据放在redis缓存里面,就不用直接来到数据库查了
     }
@@ -166,9 +203,9 @@ public class CommonController {
         //4.遍历封装
         for (Relation relation : relations) {
             relationVo = new RelationVo();
-            relationVo.setSrcId(relation.getSrc().getId());
+            relationVo.setSource(relation.getSrc().getId()+"");
             relationVo.setLabel(label);
-            relationVo.setDestId(relation.getDest().getId());
+            relationVo.setTarget(relation.getDest().getId()+"");
             relationVos.add(relationVo);
         }
         return relationVos;
@@ -182,10 +219,9 @@ public class CommonController {
      */
     @GetMapping("/{id}")
     public Result getById(@PathVariable Long id) {
+        System.out.println("getById");
         Node nodeById = commonService.getNodeById(id);
 
         return new Result(nodeById);
     }
-
-
 }
