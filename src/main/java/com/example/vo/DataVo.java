@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @program: demo1
@@ -18,25 +19,32 @@ import java.util.Iterator;
 @AllArgsConstructor
 @ToString
 public class DataVo {
-    private Iterable<Root> roots;
-    private Iterable<Team> teams;
-    private Iterable<KeyWord> keyWords;
-    private Iterable<Paper> papers;
+//    private Iterable<Root> roots;
+//    private Iterable<Team> teams;
+//    private Iterable<KeyWord> keyWords;
+//    private Iterable<Paper> papers;
+//
+//    @JsonProperty("r_keyword")
+//    private Iterable<RelationVo> keyWordRelations;
+//
+//    @JsonProperty("r_publish")
+//    private Iterable<RelationVo> publishRelations;
+//
+//    @JsonProperty("r_team")
+//    private Iterable<RelationVo> teamRelations;
+//
+//    @JsonProperty("r_citation")
+//    private Iterable<RelationVo> citationRelations;
+//
+//    @JsonProperty("t_paper")
+//    private Iterable<RelationVo> paperRelations;
 
-    @JsonProperty("r_keyword")
-    private Iterable<RelationVo> keyWordRelations;
 
 
-    @JsonProperty("r_publish")
-    private Iterable<RelationVo> publishRelations;
+    private List<NodeVo> nodes;
 
-    @JsonProperty("r_team")
-    private Iterable<RelationVo> teamRelations;
 
-    @JsonProperty("r_citation")
-    private Iterable<RelationVo> citationRelations;
-
-    @JsonProperty("t_paper")
-    private Iterable<RelationVo> paperRelations;
+    @JsonProperty("edges")
+    private List<RelationVo> relationVos;
 
 }

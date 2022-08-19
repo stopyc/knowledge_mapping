@@ -30,6 +30,6 @@ public class Root implements Node{
 
 
     @Property("name")
-    private String name;
+    private String label;
 
 }

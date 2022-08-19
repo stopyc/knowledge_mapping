@@ -11,7 +11,7 @@ import com.example.vo.Result;
  * @author: stop.yc
  * @create: 2022-08-12 20:37
  **/
-public interface RootService {
+public interface RootService{
 
 
 

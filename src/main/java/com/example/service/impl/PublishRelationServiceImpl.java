@@ -1,10 +1,7 @@
 package com.example.service.impl;
 
-import com.example.dao.KeyWordRelationRepository;
-import com.example.dao.PublishRelationRepository;
-import com.example.po.KeyWordRelation;
+import com.example.dao.bak.PublishRelationRepository;
 import com.example.po.PublishRelation;
-import com.example.service.KeyWordRelationService;
 import com.example.service.PublishRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

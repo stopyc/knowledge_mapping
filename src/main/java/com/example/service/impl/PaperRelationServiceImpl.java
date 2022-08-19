@@ -1,10 +1,7 @@
 package com.example.service.impl;
 
-import com.example.dao.CitationRelationRepository;
-import com.example.dao.PaperRelationRepository;
-import com.example.po.CitationRelation;
+import com.example.dao.bak.PaperRelationRepository;
 import com.example.po.PaperRelation;
-import com.example.service.CitationRelationService;
 import com.example.service.PaperRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

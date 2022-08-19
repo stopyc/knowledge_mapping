@@ -1,7 +1,7 @@
-package com.example.dao;
+package com.example.dao.bak;
 
-import com.example.po.CitationRelation;
 import com.example.po.KeyWordRelation;
+import com.example.po.TeamRelation;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
  * @create: 2022-08-12 21:10
  **/
 @Repository
-public interface CitationRelationRepository extends Neo4jRepository<CitationRelation,Long> {
+public interface TeamRelationRepository extends Neo4jRepository<TeamRelation,Long> {
 }

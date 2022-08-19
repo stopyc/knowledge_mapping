@@ -23,7 +23,7 @@ import java.util.List;
 @NodeEntity("team")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Team implements Node{
+public class Team implements Node {
 
     @Id
     private Long id;
@@ -34,7 +34,7 @@ public class Team implements Node{
 
 
     @Property("expert")
-    private String expert;
+    private String label;
 
 
     @Property("team")

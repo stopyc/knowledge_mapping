@@ -1,7 +1,7 @@
-package com.example.dao;
+package com.example.dao.bak;
 
+import com.example.po.KeyWord;
 import com.example.po.KeyWordRelation;
-import com.example.po.PaperRelation;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
  * @create: 2022-08-12 21:10
  **/
 @Repository
-public interface PaperRelationRepository extends Neo4jRepository<PaperRelation,Long> {
+public interface KeyWordRelationRepository extends Neo4jRepository<KeyWordRelation,Long> {
 }
