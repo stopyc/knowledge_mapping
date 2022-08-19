@@ -7,17 +7,25 @@ import com.example.vo.DataVo;
 import com.example.vo.NodeVo;
 import com.example.vo.RelationVo;
 import com.example.vo.Result;
+import io.netty.channel.EventLoop;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.util.concurrent.DefaultPromise;
+import io.netty.util.concurrent.Future;
 import jdk.nashorn.internal.ir.CallNode;
+import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.RelationshipEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import sun.awt.image.ImageWatched;
 
 import javax.management.ListenerNotFoundException;
 import javax.management.relation.RelationService;
+import javax.xml.ws.Service;
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 
 /**
  * 通用控制层
@@ -61,9 +69,14 @@ public class CommonController {
 
     static CountDownLatch countDownLatch = new CountDownLatch(7);
 
+    static EventLoopGroup group = new NioEventLoopGroup(8);
+
+    static EventLoopGroup group1 = new NioEventLoopGroup(7);
+
 
     /**
      * 获取所有节点和边的数据
+     *
      * @return :封装了节点和边数据的及国际
      * @throws InterruptedException :计数器wait异常
      */
@@ -86,7 +99,7 @@ public class CommonController {
 
 
         //优化,使用多线程进行异步查询,并同时全部结束返回
-        EventLoopGroup group = new NioEventLoopGroup(7);
+
 
         final Iterable<KeyWord>[] keyWords = new Iterable[1];
         final Iterable<Team>[] teams = new Iterable[1];
@@ -100,14 +113,14 @@ public class CommonController {
 
         List<NodeVo> nodes = new LinkedList<>();
 
-        group.next().submit(() -> {
+        group1.next().submit(() -> {
 
             NodeVo nodeVo = null;
             keyWords[0] = keyWordService.getAll();
 
             for (KeyWord keyWord : keyWords[0]) {
                 nodeVo = new NodeVo();
-                nodeVo.setId(keyWord.getId()+"").setLabel(keyWord.getLabel()).setType(1);
+                nodeVo.setId(keyWord.getId() + "").setLabel(keyWord.getLabel()).setType(1);
                 nodes.add(nodeVo);
             }
 
@@ -115,38 +128,38 @@ public class CommonController {
         });
 
 
-        group.next().submit(() -> {
+        group1.next().submit(() -> {
             NodeVo nodeVo = null;
             teams[0] = teamService.getAll();
             for (Team team : teams[0]) {
                 nodeVo = new NodeVo();
-                nodeVo.setId(team.getId()+"").setLabel(team.getLabel()).setType(2);
+                nodeVo.setId(team.getId() + "").setLabel(team.getLabel()).setType(2);
                 nodes.add(nodeVo);
             }
             countDownLatch.countDown();
         });
-        group.next().submit(() -> {
+        group1.next().submit(() -> {
             NodeVo nodeVo = null;
             keyWordRelations[0] = transferStyle(keyWordRelationService.getAll());
             countDownLatch.countDown();
         });
 
-        group.next().submit(() -> {
+        group1.next().submit(() -> {
             teamRelations[0] = transferStyle(teamRelationService.getAll());
             countDownLatch.countDown();
         });
 
-        group.next().submit(() -> {
+        group1.next().submit(() -> {
             citationRelations[0] = transferStyle(citationRelationService.getAll());
             countDownLatch.countDown();
         });
 
-        group.next().submit(() -> {
+        group1.next().submit(() -> {
             publishRelations[0] = transferStyle(publishRelationService.getAll());
             countDownLatch.countDown();
         });
 
-        group.next().submit(() -> {
+        group1.next().submit(() -> {
             paperRelations[0] = transferStyle(paperRelationService.getAll());
             countDownLatch.countDown();
         });
@@ -155,19 +168,19 @@ public class CommonController {
         NodeVo nodeVo = null;
         for (Paper paper : papers) {
             nodeVo = new NodeVo();
-            nodeVo.setId(paper.getId()+"").setLabel(paper.getLabel()).setType(3);
+            nodeVo.setId(paper.getId() + "").setLabel(paper.getLabel()).setType(3);
             nodes.add(nodeVo);
         }
         Iterable<Root> roots = rootService.getAll();
         for (Root root : roots) {
             nodeVo = new NodeVo();
-            nodeVo.setId(root.getId()+"").setLabel(root.getLabel()).setType(3);
+            nodeVo.setId(root.getId() + "").setLabel(root.getLabel()).setType(4);
             nodes.add(nodeVo);
         }
 
 
         countDownLatch.await();
-        List<RelationVo> list= new LinkedList<>();
+        List<RelationVo> list = new LinkedList<>();
         list.addAll(keyWordRelations[0]);
         list.addAll(teamRelations[0]);
         list.addAll(citationRelations[0]);
@@ -178,7 +191,7 @@ public class CommonController {
 
 //        return new Result(new DataVo(roots, teams[0], keyWords[0], papers, keyWordRelations[0], publishRelations[0], teamRelations[0], citationRelations[0], paperRelations[0]));
 
-        return new Result(new DataVo(nodes,list));
+        return new Result(new DataVo(nodes, list));
 
         //往后优化思路,因为接口几乎是一模一样的,建议处理为反射或者泛型,自动判断类型调用方法,然后建议把查的数据放在redis缓存里面,就不用直接来到数据库查了
     }
@@ -203,9 +216,9 @@ public class CommonController {
         //4.遍历封装
         for (Relation relation : relations) {
             relationVo = new RelationVo();
-            relationVo.setSource(relation.getSrc().getId()+"");
+            relationVo.setSource(relation.getSrc().getId() + "");
             relationVo.setLabel(label);
-            relationVo.setTarget(relation.getDest().getId()+"");
+            relationVo.setTarget(relation.getDest().getId() + "");
             relationVos.add(relationVo);
         }
         return relationVos;
@@ -214,6 +227,7 @@ public class CommonController {
 
     /**
      * 通过id获取结点信息
+     *
      * @param id :结点id
      * @return :返回一个封装了节点信息的结果集
      */
@@ -223,5 +237,93 @@ public class CommonController {
         Node nodeById = commonService.getNodeById(id);
 
         return new Result(nodeById);
+    }
+
+
+
+
+    @GetMapping("/new")
+    public Result newGetAll() throws InterruptedException {
+        System.out.println("1");
+
+        List<NodeVo> nodeVos =new LinkedList<>();
+//        List<NodeVo> teams =null;
+//        List<NodeVo> papers =null;
+//        List<NodeVo> roots =null;
+
+        List<RelationVo> relationVos = new LinkedList<>();
+//        List<RelationVo> teamRelations =null;
+//        List<RelationVo> citationRelations =null;
+//        List<RelationVo> publishRelations = null;
+//        List<RelationVo> paperRelations = null;
+
+        //1.准备EventLoop对象
+//        EventLoopGroup group = new NioEventLoopGroup(8);
+
+        Future<List<RelationVo>> keyWordRelationFuture = group.next().submit(() -> transferStyle(keyWordRelationService.getAll()));
+        Future<List<RelationVo>> teamRelationFuture = group.next().submit(() -> transferStyle(teamRelationService.getAll()));
+        Future<List<RelationVo>> citationRelationFuture = group.next().submit(() -> transferStyle(citationRelationService.getAll()));
+        Future<List<RelationVo>> publishRelationFuture = group.next().submit(() -> transferStyle(publishRelationService.getAll()));
+        Future<List<RelationVo>> paperRelationFuture = group.next().submit(() -> transferStyle(paperRelationService.getAll()));
+        Future<List<NodeVo>> keyWordsFuture = group.next().submit(() -> transferNodeStyle(keyWordService.getAll()));
+        Future<List<NodeVo>> teamFuture = group.next().submit(() -> transferNodeStyle(teamService.getAll()));
+        Future<List<NodeVo>> paperFuture = group.next().submit(() -> transferNodeStyle(paperService.getAll()));
+
+
+        try {
+            nodeVos.addAll(transferNodeStyle(rootService.getAll()));
+            relationVos.addAll(keyWordRelationFuture.get());
+            relationVos.addAll(teamRelationFuture.get());
+            relationVos.addAll(citationRelationFuture.get());
+            relationVos.addAll(publishRelationFuture.get());
+            nodeVos .addAll(keyWordsFuture.get());
+            nodeVos .addAll(teamFuture.get());
+            relationVos.addAll(paperRelationFuture.get());
+            nodeVos .addAll(paperFuture.get());
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
+        return new Result(new DataVo(nodeVos,relationVos));
+    }
+
+    private List<NodeVo> transferNodeStyle(Iterable<? extends Node> nodes) {
+
+        //1.如果查的数据为空
+        if (null == nodes || !nodes.iterator().hasNext()) {
+            return null;
+        }
+
+        //2.需要进行全部进行vo转换,前端需要,id,label(名称),type(类型:
+        List<RelationVo> relationVos = new LinkedList<>();
+        RelationVo relationVo = null;
+
+        //3.获取迭代器第一个的字节码对象,获取类上的注解,里面包含着label
+        NodeEntity annotation = nodes.iterator().next().getClass().getAnnotation(NodeEntity.class);
+        String label = annotation.value();
+        int type;
+        switch (label) {
+            case "paper":
+                type = 3;break;
+            case "keyword":
+                type = 1;break;
+            case "root":
+                type = 4;break;
+            case "team":
+                type = 2;break;
+            default:
+                type = 0;break;
+        }
+
+        NodeVo nodeVo = null;
+        List<NodeVo> list = new LinkedList<>();
+        for (Node node : nodes) {
+            nodeVo = new NodeVo();
+            nodeVo.setId(node.getId() + "").setLabel(node.getLabel()).setType(type);
+            list.add(nodeVo);
+        }
+
+        return list;
     }
 }
