@@ -101,7 +101,6 @@ public class CommonController {
         //优化,使用多线程进行异步查询,并同时全部结束返回
 
 
-        System.out.println();
         final Iterable<KeyWord>[] keyWords = new Iterable[1];
         final Iterable<Team>[] teams = new Iterable[1];
 
